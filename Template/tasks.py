@@ -4,8 +4,8 @@ import unittest
 def main():
     with open("Day 0/input.txt") as file:
         lines = list(map(str.strip, file.readlines()))
-    print("Task 1: " + task1(lines))
-    print("Task 2: " + task2(lines))
+    print(f"Task 1: {task1(lines)}")
+    print(f"Task 2: {task2(lines)}")
 
 
 def task1(input):
