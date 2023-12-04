@@ -4,8 +4,8 @@ import unittest
 def main():
     with open("Day 0/input.txt") as file:
         lines = list(map(str.strip, file.readlines()))
-    print(f"Task 1: {task1(lines)}")
-    print(f"Task 2: {task2(lines)}")
+    # print(f"Task 1: {task1(lines)}")
+    # print(f"Task 2: {task2(lines)}")
 
 
 def task1(input):
@@ -26,8 +26,7 @@ class Tests(unittest.TestCase):
     def test(self):
         self.assertEqual(task1(self.lines_test), 0)
 
-    def test2(self):
-        pass
+    # def test2(self):
         # self.assertEqual(task2(self.lines_test2), 0)
 
 
