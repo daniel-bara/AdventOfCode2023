@@ -98,14 +98,12 @@ class Tests(unittest.TestCase):
     def setUp(self):
         with open("Day 3/input_test.txt") as file:
             self.lines_test = list(map(str.strip, file.readlines()))
-        with open("Day 3/input_test.txt") as file:
-            self.lines_test2 = list(map(str.strip, file.readlines()))
 
     def test(self):
         self.assertEqual(task1(self.lines_test), 4361)
 
     def test2(self):
-        self.assertEqual(task2(self.lines_test2), 467835)
+        self.assertEqual(task2(self.lines_test), 467835)
 
 
 if __name__ == "__main__":
