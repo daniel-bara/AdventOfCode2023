@@ -2,6 +2,7 @@ import unittest
 from dataclasses import dataclass
 import regex
 import math
+from itertools import cycle
 
 
 def main():
@@ -18,19 +19,13 @@ class Node:
     right_id: str
 
 
-def sequence_iterator(sequence):
-    while True:
-        for character in sequence:
-            yield character
-
-
 def find_node_by_id(id, node_list: list[Node]) -> Node:
     return next(filter(lambda n: n.id == id, node_list))
 
 
 def task1(input):
     nodes: list(Node) = []
-    sequence = sequence_iterator(input[0])
+    sequence = cycle(input[0])
     for line in input[2:]:
         nodes.append(Node(
             regex.match(r'\w+', line).group(0),
@@ -50,31 +45,33 @@ def task1(input):
 
 def task2(input):
     nodes: list(Node) = []
-    sequence = sequence_iterator(input[0])
+    sequence = cycle(input[0])
     for line in input[2:]:
-        nodes.append(Node(
-            regex.match(r'\w+', line).group(0),
-            regex.search(r'(?:\()(\w+)', line).group(1),
-            regex.search(r'(\w+)(?:\))', line).group(1)
-        ))
+        match = regex.match(
+            r'(?P<id>\w{3})\W+\((?P<left>\w{3})\W+(?P<right>\w{3})\)', line)
+        nodes.append(Node(match.group("id"),
+                          match.group("left"),
+                          match.group("right"),
+                          ))
     current_nodes = list(filter(lambda n: n.id[-1] == "A", nodes))
     loop_lengths = {}
     count = 0
     while not all(map(lambda n: n.id[-1] == "Z", current_nodes)):
         if next(sequence) == "L":
             for i in range(len(current_nodes)):
-                current_nodes[i] = find_node_by_id(current_nodes[i].left_id, nodes)
+                current_nodes[i] = find_node_by_id(
+                    current_nodes[i].left_id, nodes)
         else:
             for i in range(len(current_nodes)):
-                current_nodes[i] = find_node_by_id(current_nodes[i].right_id, nodes)
+                current_nodes[i] = find_node_by_id(
+                    current_nodes[i].right_id, nodes)
         count += 1
         for i in range(len(current_nodes)):
-            if  current_nodes[i].id[-1] == "Z":
-                print(f"Ghost {i} finished at {count} {current_nodes[i].id}")
+            if current_nodes[i].id[-1] == "Z":
                 if not loop_lengths.get(i, None):
                     loop_lengths[i] = count
                 if len(loop_lengths) == len(current_nodes):
-                    return math.lcm(*loop_lengths.values()) # I don't know why this works but it does
+                    return math.lcm(*loop_lengths.values())
     return count
 
 
