@@ -1,0 +1,3 @@
+F--J.O.. - not enclosed
+|...O... - enclosed
+F--7.O.. - not enclosed
