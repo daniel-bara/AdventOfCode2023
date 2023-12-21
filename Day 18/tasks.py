@@ -38,34 +38,29 @@ def task1(input):
         instructions.append(instruction)
         coords = coords_add(coords, instruction.direction, instruction.length)
     return calculate_area(instructions)
-    
+
 
 def calculate_area(instructions: list[Instruction]):
     area = 1
     for instr in instructions:
         area += instr.length/2
-        if instr.direction == "R":
-            area -= instr.length*instr.coords[1]/2
-        if instr.direction == "D":
-            area += instr.length*instr.coords[0]/2
-        if instr.direction == "L":
-            area += instr.length*instr.coords[1]/2
-        if instr.direction == "U":
-            area -= instr.length*instr.coords[0]/2
-    assert float(int(area)) == area
+        area_calculation = {"R": (-1, 1), "D": (1, 0), "L": (1, 1), "U": (-1, 0)}
+        values = area_calculation[instr.direction]
+        area += instr.length * values[0] * instr.coords[values[1]] / 2
     return int(area)
+
 
 def task2(input):
     instructions = []
     coords = (0, 0)
     for line in input:
         m = regex.match(r"(?P<direction>U|R|D|L) (?P<length>\d+) \(#(?P<color>\w+)\)", line)
-        dir_int=int(m.group("color")[-1])
+        dir_int = int(m.group("color")[-1])
         dir_map = {0: "R", 1: "D", 2: "L", 3: "U"}
         instruction = Instruction(
-                    dir_map[dir_int],
-                    int(m.group("color")[:5], 16), 
-                    coords)
+            dir_map[dir_int],
+            int(m.group("color")[:5], 16),
+            coords)
         instructions.append(instruction)
         coords = coords_add(coords, instruction.direction, instruction.length)
     return calculate_area(instructions)
